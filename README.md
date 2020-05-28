@@ -13,3 +13,8 @@ python setup.py develop
 ```bash
 pip uninstall changie
 ```
+
+## TODO
+
+- Config file
+- Message type
