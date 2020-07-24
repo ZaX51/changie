@@ -9,33 +9,51 @@ CHANGELOG_ITEM_EXTENSION = '.md';
 def create_changelog_item(message):
     write_file(f'{CHANGELOG_ITEM_PREFIX}_{datetime.now().timestamp()}{CHANGELOG_ITEM_EXTENSION}', message)
 
-def generate(version):
-    changelog_items_file_names = __get_changelog_items_file_names()
+    print('File added')
 
-    if len(changelog_items_file_names) == 0:
+def update_changelog(version):
+    changelog_file_names = __get_changelog_file_names()
+
+    if len(changelog_file_names) == 0:
         print('Empty changelog for new version')
         return
 
-    new_version_changelog = __generate_new_version_changelog(version, changelog_items_file_names)
-    
+    new_version_changelog = __generate_new_version_changelog(version, changelog_file_names)
+
     __update_changelog(new_version_changelog)
+    __remove_changelog_files(changelog_file_names)
 
-def __get_changelog_items_file_names():
-    files_names = os.listdir(os.getcwd())
-    return list(filter(lambda f: f.startswith(CHANGELOG_ITEM_PREFIX) and f.endswith(CHANGELOG_ITEM_EXTENSION), files_names))
+    print('Changelog updated')
 
-def __generate_new_version_changelog(version, filtered_files):
+def __get_changelog_file_names():
+    return list(filter(__is_changelog_item, __get_files_names_in_directory()))
+
+def __is_changelog_item(file_name: str):
+    return file_name.startswith(CHANGELOG_ITEM_PREFIX) and file_name.endswith(CHANGELOG_ITEM_EXTENSION)
+
+def __get_files_names_in_directory():
+    return os.listdir(os.getcwd())
+
+def __generate_new_version_changelog(version, changelog_file_names):
     new_version_changelog = f'## {version}\n\n'
 
-    for filename in filtered_files:
-        changelog_item = read_file(filename)
-        new_version_changelog += f'* {changelog_item}\n'
-        os.remove(filename)
+    for file_name in changelog_file_names:
+        file_content = read_file(file_name)
+        new_version_changelog += f'* {file_content}\n'
     
     return new_version_changelog
 
 def __update_changelog(new_version_changelog):
-    current_changelog = read_file(CHANGELOG_FILE_NAME)
-    new_version_changelog += f'\n{current_changelog}'
+    current_changelog = ''
 
-    write_file(CHANGELOG_FILE_NAME, new_version_changelog)
+    try:
+        current_changelog = read_file(CHANGELOG_FILE_NAME)
+    except FileNotFoundError:
+        print('CHANGELOG.md not found, creating file')
+    finally:
+        updated_changelog = new_version_changelog + '\n' + current_changelog
+        write_file(CHANGELOG_FILE_NAME, updated_changelog)
+
+def __remove_changelog_files(file_names):
+    for filename in file_names:
+        os.remove(filename)
