@@ -14,37 +14,28 @@ def create_changelog_item(message):
 
 def update_changelog(version):
     changelog_items_names = __get_changelog_items_names()
-    changelog_items = __get_changelog_items(changelog_items_names)
 
-    if len(changelog_items) == 0:
+    if len(changelog_items_names) == 0:
         print('Empty changelog for new version')
         return
 
-    new_version_changelog = __generate_new_version_changelog(version, changelog_items)
+    changelog_generator = ChangelogGenerator()
 
-    __update_changelog(new_version_changelog)
+    changelog_generator.generate(version, __get_changelog_items(changelog_items_names))
+
+    __update_changelog(changelog_generator.get_changelog())
     __remove_changelog_items(changelog_items_names)
 
     print('Changelog updated')
 
 def __get_changelog_items_names():
-    return list(filter(__is_changelog_item, __get_files_names_in_directory()))
+    return list(filter(
+        lambda file_name: file_name.startswith(CHANGELOG_ITEM_PREFIX) and file_name.endswith(CHANGELOG_ITEM_EXTENSION),
+        os.listdir(os.getcwd())
+    ))
 
 def __get_changelog_items(changelog_items_names):
-    return list(map(lambda f: read_file(f), changelog_items_names))
-
-def __is_changelog_item(file_name: str):
-    return file_name.startswith(CHANGELOG_ITEM_PREFIX) and file_name.endswith(CHANGELOG_ITEM_EXTENSION)
-
-def __get_files_names_in_directory():
-    return os.listdir(os.getcwd())
-
-def __generate_new_version_changelog(version, changelog_items):
-    changelog_generator = ChangelogGenerator()
-
-    changelog_generator.generate(version, changelog_items)
-
-    return changelog_generator.get_changelog()
+    return list(map(lambda file_name: read_file(file_name), changelog_items_names))
 
 def __update_changelog(new_version_changelog):
     current_changelog = ''
