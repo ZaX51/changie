@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from .utils import write_file, read_file
-from .changelog_generator import ChangelogGenerator
+from .changelog_generator import generate
 
 CHANGELOG_FILE_NAME = 'CHANGELOG.md';
 CHANGELOG_ITEM_PREFIX = 'chg';
@@ -12,6 +12,15 @@ def create_changelog_item(message):
 
     print('File added')
 
+def preview_changelog(version):
+    changelog_items_names = __get_changelog_items_names()
+
+    if len(changelog_items_names) == 0:
+        print('Empty changelog for new version')
+        return
+
+    print(generate(version, __get_changelog_items(changelog_items_names)))
+
 def update_changelog(version):
     changelog_items_names = __get_changelog_items_names()
 
@@ -19,11 +28,7 @@ def update_changelog(version):
         print('Empty changelog for new version')
         return
 
-    changelog_generator = ChangelogGenerator()
-
-    changelog_generator.generate(version, __get_changelog_items(changelog_items_names))
-
-    __update_changelog(changelog_generator.get_changelog())
+    __update_changelog(generate(version, __get_changelog_items(changelog_items_names)))
     __remove_changelog_items(changelog_items_names)
 
     print('Changelog updated')
