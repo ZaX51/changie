@@ -16,19 +16,19 @@ def preview_changelog(version):
     changelog_items_names = __get_changelog_items_names()
 
     if len(changelog_items_names) == 0:
-        print('Empty changelog for new version')
+        print('Empty changelog')
         return
 
-    print(generate(version, __get_changelog_items(changelog_items_names)))
+    print(generate(version, __get_changelog_items_content(changelog_items_names)))
 
 def update_changelog(version):
     changelog_items_names = __get_changelog_items_names()
 
     if len(changelog_items_names) == 0:
-        print('Empty changelog for new version')
+        print('Empty changelog')
         return
 
-    __update_changelog(generate(version, __get_changelog_items(changelog_items_names)))
+    __update_changelog(generate(version, __get_changelog_items_content(changelog_items_names)))
     __remove_changelog_items(changelog_items_names)
 
     print('Changelog updated')
@@ -39,7 +39,7 @@ def __get_changelog_items_names():
         os.listdir(os.getcwd())
     ))
 
-def __get_changelog_items(changelog_items_names):
+def __get_changelog_items_content(changelog_items_names):
     return list(map(lambda file_name: read_file(file_name), changelog_items_names))
 
 def __update_changelog(new_version_changelog):
