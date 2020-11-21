@@ -8,14 +8,16 @@ def main():
 @main.command()
 @click.option('-m', '--message', default='Message', help='message')
 def add(message):
-    create_changelog_item(message)
+    name = create_changelog_item(message)
+    print(f'File {name} added')
 
 @main.command()
 @click.option('-v', '--version', default='New version', help='message')
 def preview(version):
-    preview_changelog(version)
+    print(preview_changelog(version))
 
 @main.command()
 @click.option('-v', '--version', default='New version', help='message')
 def update(version):
     update_changelog(version)
+    print('Changelog updated')

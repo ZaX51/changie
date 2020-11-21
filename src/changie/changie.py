@@ -10,16 +10,14 @@ def create_changelog_item(message):
     config.load()
     repository = ChangelogItemsRepository(config)
 
-    repository.add(message)
-
-    print('File added')
+    return repository.add(message)
 
 def preview_changelog(version):
     config = Config()
     config.load()
     repository = ChangelogItemsRepository(config)
 
-    print(__construct_changelog(version, repository.get_all()))
+    return __construct_changelog(version, repository.get_all())
 
 def update_changelog(version):
     config = Config()
@@ -27,13 +25,11 @@ def update_changelog(version):
     repository = ChangelogItemsRepository(config)
 
     __update_changelog(
-        config.config['ChangelogFileName'],
+        config.get_changelog_file_name(),
         __construct_changelog(version, repository.get_all())
     )
 
     repository.remove_all()
-
-    print('Changelog updated')
 
 def __construct_changelog(version, items):
     builder = ChangelogBuilder()
@@ -41,7 +37,7 @@ def __construct_changelog(version, items):
     builder.add_header(version)
     builder.add_changes_list(items)
 
-    builder.get()
+    return builder.get()
 
 def __update_changelog(changelog_file_name, new_version_changelog):
     current_changelog = ''
