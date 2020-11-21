@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from .utils import write_file, read_file
-from .changelog_generator import generate
+from .changelog_builder import ChangelogBuilder
 from .config import Config
 from .changelog_items_repository import ChangelogItemsRepository
 
@@ -19,17 +19,29 @@ def preview_changelog(version):
     config.load()
     repository = ChangelogItemsRepository(config)
 
-    print(generate(version, repository.get_all()))
+    print(__construct_changelog(version, repository.get_all()))
 
 def update_changelog(version):
     config = Config()
     config.load()
     repository = ChangelogItemsRepository(config)
 
-    __update_changelog(config.config['ChangelogFileName'], generate(version, repository.get_all()))
+    __update_changelog(
+        config.config['ChangelogFileName'],
+        __construct_changelog(version, repository.get_all())
+    )
+
     repository.remove_all()
 
     print('Changelog updated')
+
+def __construct_changelog(version, items):
+    builder = ChangelogBuilder()
+
+    builder.add_header(version)
+    builder.add_changes_list(items)
+
+    builder.get()
 
 def __update_changelog(changelog_file_name, new_version_changelog):
     current_changelog = ''
