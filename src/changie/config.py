@@ -7,7 +7,8 @@ class Config:
         config['Changie'] = {
             'ChangelogFileName': 'CHANGELOG.md',
             'ChangelogItemPrefix': 'chg',
-            'ChangelogItemExtension': '.md'
+            'ChangelogItemExtension': '.md',
+            'ChangelogItemsPath': 'chg_items'
         }
         config.read('.changierc')
 
@@ -21,4 +22,7 @@ class Config:
 
     def get_changelog_item_extension(self):
         return self.__config['ChangelogItemExtension']
+
+    def get_changelog_items_path(self):
+        return self.__config['ChangelogItemsPath']
 
