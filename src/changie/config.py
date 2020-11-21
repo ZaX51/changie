@@ -1,14 +1,15 @@
 import configparser
 
-def get_config():
-    config = configparser.ConfigParser()
+class Config:
+    def load(self):
+        config = configparser.ConfigParser()
 
-    config['Changie'] = {
-        'ChangelogFileName': 'CHANGELOG.md',
-        'ChangelogItemPrefix': 'chg',
-        'ChangelogItemExtension': '.md'
-    }
+        config['Changie'] = {
+            'ChangelogFileName': 'CHANGELOG.md',
+            'ChangelogItemPrefix': 'chg',
+            'ChangelogItemExtension': '.md'
+        }
+        config.read('.changierc')
 
-    config.read('.changierc')
+        self.config = config['Changie']
 
-    return config['Changie']
