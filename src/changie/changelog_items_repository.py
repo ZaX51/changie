@@ -3,15 +3,16 @@ import os
 from .utils import write_file, read_file
 from .config import Config, ConfigKey
 
+
 class ChangelogItemsRepository:
     def __init__(self, config: Config):
         self.config = config
 
     def add(self, message):
-        file_name = '{prefix}_{timestamp}{extension}'.format(
-            prefix = self.config.get(ConfigKey.ChangelogItemPrefix),
-            timestamp = datetime.now().timestamp(),
-            extension = self.config.get(ConfigKey.ChangelogItemExtension)
+        file_name = "{prefix}_{timestamp}{extension}".format(
+            prefix=self.config.get(ConfigKey.ChangelogItemPrefix),
+            timestamp=datetime.now().timestamp(),
+            extension=self.config.get(ConfigKey.ChangelogItemExtension),
         )
 
         write_file(self.__get_file_path(file_name), message)
@@ -35,10 +36,16 @@ class ChangelogItemsRepository:
                 os.remove(self.__get_file_path(file_name))
 
     def __is_changelog_item(self, file_name):
-        return file_name.startswith(self.config.get(ConfigKey.ChangelogItemPrefix)) and file_name.endswith(self.config.get(ConfigKey.ChangelogItemExtension))
+        return file_name.startswith(
+            self.config.get(ConfigKey.ChangelogItemPrefix)
+        ) and file_name.endswith(self.config.get(ConfigKey.ChangelogItemExtension))
 
     def __get_items_dir(self):
-        return os.listdir(os.path.join(os.getcwd(), self.config.get(ConfigKey.ChangelogItemsPath)))
+        return os.listdir(
+            os.path.join(os.getcwd(), self.config.get(ConfigKey.ChangelogItemsPath))
+        )
 
     def __get_file_path(self, file_name):
-        return os.path.join(os.getcwd(), self.config.get(ConfigKey.ChangelogItemsPath), file_name)
+        return os.path.join(
+            os.getcwd(), self.config.get(ConfigKey.ChangelogItemsPath), file_name
+        )
