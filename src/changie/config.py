@@ -1,28 +1,33 @@
-import configparser
+from enum import Enum
+import yaml
+
+class ConfigKey(Enum):
+    ChangelogFileName = 'changelogFileName'
+    ChangelogItemPrefix = 'changelogItemPrefix'
+    ChangelogItemExtension = 'changelogItemExtension'
+    ChangelogItemsPath = 'changelogItemsPath'
+
+CONFIG_FILE_NAME = '.changierc.yml' # TODO: .yaml
 
 class Config:
     def load(self):
-        config = configparser.ConfigParser()
-
-        config['Changie'] = {
-            'ChangelogFileName': 'CHANGELOG.md',
-            'ChangelogItemPrefix': 'chg',
-            'ChangelogItemExtension': '.md',
-            'ChangelogItemsPath': 'chg_items'
+        config = {
+            ConfigKey.ChangelogFileName.value: 'CHANGELOG.md',
+            ConfigKey.ChangelogItemPrefix.value: 'chg',
+            ConfigKey.ChangelogItemExtension.value: '.md',
+            ConfigKey.ChangelogItemsPath.value: 'chg_items'
         }
-        config.read('.changierc')
 
-        self.__config = config['Changie']
 
-    def get_changelog_file_name(self):
-        return self.__config['ChangelogFileName']
+        try:
+            f = open(CONFIG_FILE_NAME)
+            config_from_file = yaml.load(f, Loader=yaml.FullLoader)
+            config.update(config_from_file)
+        except:
+            pass
 
-    def get_changelog_item_prefix(self):
-        return self.__config['ChangelogItemPrefix']
+        self._config = config
+    
 
-    def get_changelog_item_extension(self):
-        return self.__config['ChangelogItemExtension']
-
-    def get_changelog_items_path(self):
-        return self.__config['ChangelogItemsPath']
-
+    def get(self, key: ConfigKey):
+        return self._config[key.value]

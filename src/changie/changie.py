@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 from .utils import write_file, read_file
 from .changelog_builder import ChangelogBuilder
-from .config import Config
+from .config import Config, ConfigKey
 from .changelog_items_repository import ChangelogItemsRepository
 
 def create_changelog_item(message):
@@ -25,7 +25,7 @@ def update_changelog(version):
     repository = ChangelogItemsRepository(config)
 
     __update_changelog(
-        config.get_changelog_file_name(),
+        config.get(ConfigKey.ChangelogFileName),
         __construct_changelog(version, repository.get_all())
     )
 

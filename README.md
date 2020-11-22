@@ -1,6 +1,5 @@
 # Changelog generator
 
-## TODO
+## Documentation
 
-- Config file
-- Message type
+TODO
