@@ -218,4 +218,4 @@ $RECYCLE.BIN/
 
 # DEV
 DEV_CHANGELOG.md
-chg_*.md
+chg_*.yml

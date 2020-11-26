@@ -1,4 +1,5 @@
 import click
+from changie.changelog_item_builder import ItemType
 from .changie import update_changelog, create_changelog_item, preview_changelog
 
 
@@ -9,19 +10,25 @@ def main():
 
 @main.command()
 @click.option("-m", "--message", default="Message", help="message")
-def add(message):
-    name = create_changelog_item(message)
+@click.option(
+    "-t",
+    "--type",
+    default=ItemType.Added.value,
+    type=click.Choice(list(map(lambda x: x.value, ItemType))),
+)
+def add(message: str, type: str):
+    name = create_changelog_item(message, type)
     print(f"File {name} added")
 
 
 @main.command()
 @click.option("-v", "--version", default="New version", help="message")
-def preview(version):
+def preview(version: str):
     print(preview_changelog(version))
 
 
 @main.command()
 @click.option("-v", "--version", default="New version", help="message")
-def update(version):
+def update(version: str):
     update_changelog(version)
     print("Changelog updated")

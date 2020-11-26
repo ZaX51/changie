@@ -1,18 +1,19 @@
+from changie.changelog_item_builder import ItemType
 from .utils import write_file, read_file
 from .changelog_builder import ChangelogBuilder
 from .config import Config, ConfigKey
 from .changelog_items_repository import ChangelogItemsRepository
 
 
-def create_changelog_item(message):
+def create_changelog_item(message: str, type: str):
     config = Config()
     config.load()
     repository = ChangelogItemsRepository(config)
 
-    return repository.add(message)
+    return repository.add(message, ItemType(type))
 
 
-def preview_changelog(version):
+def preview_changelog(version: str):
     config = Config()
     config.load()
     repository = ChangelogItemsRepository(config)
@@ -20,7 +21,7 @@ def preview_changelog(version):
     return __construct_changelog(version, repository.get_all())
 
 
-def update_changelog(version):
+def update_changelog(version: str):
     config = Config()
     config.load()
     repository = ChangelogItemsRepository(config)
@@ -33,7 +34,7 @@ def update_changelog(version):
     repository.remove_all()
 
 
-def __construct_changelog(version, items):
+def __construct_changelog(version: str, items):
     builder = ChangelogBuilder()
 
     builder.add_header(version)
@@ -42,7 +43,7 @@ def __construct_changelog(version, items):
     return builder.get()
 
 
-def __update_changelog(changelog_file_name, new_version_changelog):
+def __update_changelog(changelog_file_name: str, new_version_changelog: str):
     current_changelog = ""
 
     try:

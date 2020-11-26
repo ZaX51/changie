@@ -17,7 +17,7 @@ class Config:
         config = {
             ConfigKey.ChangelogFileName.value: "CHANGELOG.md",
             ConfigKey.ChangelogItemPrefix.value: "chg",
-            ConfigKey.ChangelogItemExtension.value: ".md",
+            ConfigKey.ChangelogItemExtension.value: ".yml",
             ConfigKey.ChangelogItemsPath.value: "chg_items",
         }
 
