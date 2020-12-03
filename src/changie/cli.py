@@ -9,7 +9,7 @@ def main():
 
 
 @main.command()
-@click.option("-m", "--message", default="Message", help="message")
+@click.option("-m", "--message", required=True, help="Message")
 @click.option(
     "-t",
     "--type",
@@ -22,13 +22,13 @@ def add(message: str, type: str):
 
 
 @main.command()
-@click.option("-v", "--version", default="New version", help="message")
+@click.option("-v", "--version", default="0.0.0", help="Release version")
 def preview(version: str):
     print(preview_changelog(version))
 
 
 @main.command()
-@click.option("-v", "--version", default="New version", help="message")
+@click.option("-v", "--version", default="0.0.0", help="Release version")
 def update(version: str):
     update_changelog(version)
     print("Changelog updated")

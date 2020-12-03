@@ -10,9 +10,9 @@ class ChangelogBuilder:
     def get(self):
         return self.changelog
 
-    def add_header(self, version):
-        date = datetime.now().strftime("%m-%d-%Y")
-        self.changelog += f"## {version} - {date}\n\n"
+    def add_header(self, version: str, date: datetime):
+        formatted_date = date.strftime("%d-%m-%Y")
+        self.changelog += f"## {version} - {formatted_date}\n\n"
 
     def add_changes_list(self, items):
         for type, changes in self.__group_changes_by_type(items).items():

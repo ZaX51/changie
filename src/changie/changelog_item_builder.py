@@ -14,11 +14,11 @@ class ChangelogItemBuilder:
     def __init__(self):
         self.__item = {}
 
+    def get(self):
+        return self.__item
+
     def add_message(self, message: str):
         self.__item["message"] = message
 
     def add_type(self, type: ItemType):
         self.__item["type"] = type.value
-
-    def get(self):
-        return self.__item

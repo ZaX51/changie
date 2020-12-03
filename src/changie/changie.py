@@ -1,3 +1,4 @@
+from datetime import datetime
 from changie.changelog_item_builder import ItemType
 from .utils import write_file, read_file
 from .changelog_builder import ChangelogBuilder
@@ -37,7 +38,7 @@ def update_changelog(version: str):
 def __construct_changelog(version: str, items):
     builder = ChangelogBuilder()
 
-    builder.add_header(version)
+    builder.add_header(version, datetime.now())
     builder.add_changes_list(items)
 
     return builder.get()
