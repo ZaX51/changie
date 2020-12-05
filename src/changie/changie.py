@@ -6,51 +6,40 @@ from .config import Config, ConfigKey
 from .changelog_items_repository import ChangelogItemsRepository
 
 
-def create_changelog_item(message: str, type: str):
-    config = Config()
-    config.load()
-    repository = ChangelogItemsRepository(config)
+class Changie:
+    def __init__(self, config: Config, repository: ChangelogItemsRepository):
+        self.config = config
+        self.repository = repository
 
-    return repository.add(message, ItemType(type))
+    def create_changelog_item(self, message: str, type: str):
+        return self.repository.add(message, ItemType(type))
 
+    def preview_changelog(self, version: str):
+        return self.__construct_changelog(version, self.repository.get_all())
 
-def preview_changelog(version: str):
-    config = Config()
-    config.load()
-    repository = ChangelogItemsRepository(config)
+    def update_changelog(self, version: str):
+        self.__update_changelog(
+            self.config.get(ConfigKey.ChangelogFileName),
+            self.__construct_changelog(version, self.repository.get_all()),
+        )
 
-    return __construct_changelog(version, repository.get_all())
+        self.repository.remove_all()
 
+    def __construct_changelog(self, version: str, items):
+        builder = ChangelogBuilder()
 
-def update_changelog(version: str):
-    config = Config()
-    config.load()
-    repository = ChangelogItemsRepository(config)
+        builder.add_header(version, datetime.now())
+        builder.add_changes_list(items)
 
-    __update_changelog(
-        config.get(ConfigKey.ChangelogFileName),
-        __construct_changelog(version, repository.get_all()),
-    )
+        return builder.get()
 
-    repository.remove_all()
+    def __update_changelog(self, changelog_file_name: str, new_version_changelog: str):
+        current_changelog = ""
 
-
-def __construct_changelog(version: str, items):
-    builder = ChangelogBuilder()
-
-    builder.add_header(version, datetime.now())
-    builder.add_changes_list(items)
-
-    return builder.get()
-
-
-def __update_changelog(changelog_file_name: str, new_version_changelog: str):
-    current_changelog = ""
-
-    try:
-        current_changelog = read_file(changelog_file_name)
-    except FileNotFoundError:
-        print("CHANGELOG.md not found, creating file")
-    finally:
-        updated_changelog = new_version_changelog + "\n" + current_changelog
-        write_file(changelog_file_name, updated_changelog)
+        try:
+            current_changelog = read_file(changelog_file_name)
+        except FileNotFoundError:
+            print("CHANGELOG.md not found, creating file")
+        finally:
+            updated_changelog = new_version_changelog + "\n" + current_changelog
+            write_file(changelog_file_name, updated_changelog)

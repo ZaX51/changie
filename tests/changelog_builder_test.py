@@ -2,6 +2,18 @@ from datetime import datetime
 from changie.changelog_builder import ChangelogBuilder
 from changie.changelog_item_builder import ItemType
 
+mocked_changelog = """### Added
+- ADDED 1
+- ADDED 2
+
+### Fixed
+- FIXED 1
+
+### Removed
+- REMOVED 1
+
+"""
+
 
 def test_empty_changelog():
     builder = ChangelogBuilder()
@@ -27,14 +39,6 @@ def test_add_items():
         {"message": "REMOVED 1", "type": ItemType.Removed.value},
     ]
 
-    result = "### Added\n"
-    result += "- ADDED 1\n"
-    result += "- ADDED 2\n\n"
-    result += "### Fixed\n"
-    result += "- FIXED 1\n\n"
-    result += "### Removed\n"
-    result += "- REMOVED 1\n\n"
-
     builder.add_changes_list(items)
 
-    assert builder.get() == result
+    assert builder.get() == mocked_changelog
