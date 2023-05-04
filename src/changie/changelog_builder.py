@@ -1,6 +1,6 @@
 from datetime import datetime
 from itertools import groupby
-from changie.changelog_item_builder import ItemType
+from changie.change_file_builder import ChangeType
 
 
 class ChangelogBuilder:
@@ -18,7 +18,7 @@ class ChangelogBuilder:
         grouped_items = self.__group_changes_by_type(items).items()
 
         for idx, (type, changes) in enumerate(grouped_items):
-            self.changelog += f"### {ItemType(type).name}\n\n"
+            self.changelog += f"### {ChangeType(type).name}\n\n"
 
             for c in changes:
                 self.changelog += "- {message}\n".format(message=c["message"])

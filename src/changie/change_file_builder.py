@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ItemType(Enum):
+class ChangeType(Enum):
     Added = "added"
     Changed = "changed"
     Deprecated = "deprecated"
@@ -10,7 +10,7 @@ class ItemType(Enum):
     Security = "security"
 
 
-class ChangelogItemBuilder:
+class ChangeFileBuilder:
     def __init__(self):
         self.__item = {}
 
@@ -20,5 +20,5 @@ class ChangelogItemBuilder:
     def add_message(self, message: str):
         self.__item["message"] = message
 
-    def add_type(self, type: ItemType):
+    def add_type(self, type: ChangeType):
         self.__item["type"] = type.value

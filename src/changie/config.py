@@ -5,9 +5,9 @@ import yaml
 
 class ConfigKey(Enum):
     ChangelogFileName = "changelogFileName"
-    ChangelogItemPrefix = "changelogItemPrefix"
-    ChangelogItemExtension = "changelogItemExtension"
-    ChangelogItemsPath = "changelogItemsPath"
+    ChangeFilePrefix = "changeFilePrefix"
+    ChangeFileExtension = "changeFileExtension"
+    ChangeFilesPath = "changeFilesPath"
 
 
 CONFIG_FILE_NAME = ".changierc.yml"  # TODO: .yaml
@@ -17,9 +17,9 @@ class Config:
     def load(self, config_path: str = None):
         config = {
             ConfigKey.ChangelogFileName.value: "CHANGELOG.md",
-            ConfigKey.ChangelogItemPrefix.value: "chg",
-            ConfigKey.ChangelogItemExtension.value: ".yml",
-            ConfigKey.ChangelogItemsPath.value: "chg_items",
+            ConfigKey.ChangeFilePrefix.value: "chg",
+            ConfigKey.ChangeFileExtension.value: ".yml",
+            ConfigKey.ChangeFilesPath.value: "chg_items",
         }
 
         path = config_path or CONFIG_FILE_NAME

@@ -1,6 +1,6 @@
 import click
-from changie.changelog_item_builder import ItemType
-from changie.changelog_items_repository import ChangelogItemsRepository
+from changie.change_file_builder import ChangeType
+from changie.change_files_repository import ChangeFilesRepository
 from changie.config import Config
 from .changie import Changie
 
@@ -15,7 +15,7 @@ def main(config_path: str = None):
     config = Config()
     config.load(config_path)
 
-    repository = ChangelogItemsRepository(config)
+    repository = ChangeFilesRepository(config)
 
     changie = Changie(config, repository)
 
@@ -25,8 +25,8 @@ def main(config_path: str = None):
 @click.option(
     "-t",
     "--type",
-    default=ItemType.Added.value,
-    type=click.Choice(list(map(lambda x: x.value, ItemType))),
+    default=ChangeType.Added.value,
+    type=click.Choice(list(map(lambda x: x.value, ChangeType))),
     help="Message type",
     show_default=True,
 )

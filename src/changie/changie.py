@@ -1,18 +1,18 @@
 from datetime import datetime
-from changie.changelog_item_builder import ItemType
+from changie.change_file_builder import ChangeType
 from .utils import write_file, read_file
 from .changelog_builder import ChangelogBuilder
 from .config import Config, ConfigKey
-from .changelog_items_repository import ChangelogItemsRepository
+from .change_files_repository import ChangeFilesRepository
 
 
 class Changie:
-    def __init__(self, config: Config, repository: ChangelogItemsRepository):
+    def __init__(self, config: Config, repository: ChangeFilesRepository):
         self.config = config
         self.repository = repository
 
     def create_changelog_item(self, message: str, type: str):
-        return self.repository.add(message, ItemType(type))
+        return self.repository.add(message, ChangeType(type))
 
     def preview_changelog(self, version: str):
         return self.__construct_changelog(version, self.repository.get_all())

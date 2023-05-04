@@ -1,6 +1,6 @@
 from datetime import datetime
 from changie.changelog_builder import ChangelogBuilder
-from changie.changelog_item_builder import ItemType
+from changie.change_file_builder import ChangeType
 
 mocked_changelog = """### Added
 - ADDED 1
@@ -33,10 +33,10 @@ def test_add_header():
 def test_add_items():
     builder = ChangelogBuilder()
     items = [
-        {"message": "ADDED 1", "type": ItemType.Added.value},
-        {"message": "ADDED 2", "type": ItemType.Added.value},
-        {"message": "FIXED 1", "type": ItemType.Fixed.value},
-        {"message": "REMOVED 1", "type": ItemType.Removed.value},
+        {"message": "ADDED 1", "type": ChangeType.Added.value},
+        {"message": "ADDED 2", "type": ChangeType.Added.value},
+        {"message": "FIXED 1", "type": ChangeType.Fixed.value},
+        {"message": "REMOVED 1", "type": ChangeType.Removed.value},
     ]
 
     builder.add_changes_list(items)
