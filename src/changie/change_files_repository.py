@@ -35,11 +35,7 @@ class ChangeFilesRepository:
             if not self.__is_change_file(file_name):
                 continue
 
-            items.append(
-                yaml.load(
-                    read_file(self.__get_file_path(file_name)), Loader=yaml.Loader
-                )
-            )
+            items.append(yaml.load(read_file(self.__get_file_path(file_name)), Loader=yaml.Loader))
 
         return items
 
@@ -49,16 +45,12 @@ class ChangeFilesRepository:
                 os.remove(self.__get_file_path(file_name))
 
     def __is_change_file(self, file_name: str):
-        return file_name.startswith(
-            self.config.get(ConfigKey.ChangeFilePrefix)
-        ) and file_name.endswith(self.config.get(ConfigKey.ChangeFileExtension))
+        return file_name.startswith(self.config.get(ConfigKey.ChangeFilePrefix)) and file_name.endswith(
+            self.config.get(ConfigKey.ChangeFileExtension)
+        )
 
     def __get_files_dir(self):
-        return os.listdir(
-            os.path.join(os.getcwd(), self.config.get(ConfigKey.ChangeFilesPath))
-        )
+        return os.listdir(os.path.join(os.getcwd(), self.config.get(ConfigKey.ChangeFilesPath)))
 
     def __get_file_path(self, file_name: str):
-        return os.path.join(
-            os.getcwd(), self.config.get(ConfigKey.ChangeFilesPath), file_name
-        )
+        return os.path.join(os.getcwd(), self.config.get(ConfigKey.ChangeFilesPath), file_name)
