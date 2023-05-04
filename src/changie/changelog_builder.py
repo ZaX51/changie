@@ -15,13 +15,16 @@ class ChangelogBuilder:
         self.changelog += f"## {version} - {formatted_date}\n\n"
 
     def add_changes_list(self, items):
-        for type, changes in self.__group_changes_by_type(items).items():
-            self.changelog += f"### {ItemType(type).name}\n"
+        grouped_items = self.__group_changes_by_type(items).items()
+
+        for idx, (type, changes) in enumerate(grouped_items):
+            self.changelog += f"### {ItemType(type).name}\n\n"
 
             for c in changes:
                 self.changelog += "- {message}\n".format(message=c["message"])
 
-            self.changelog += "\n"
+            if idx < len(grouped_items) - 1:
+                self.changelog += "\n"
 
     def __group_changes_by_type(self, items):
         sorted_items = sorted(items, key=lambda el: el["type"])
